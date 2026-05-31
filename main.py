@@ -1,12 +1,24 @@
-import os
-import sys
+import importlib.util
+from pathlib import Path
 
-# Ensure the task utility module can be imported from the 'Task manager' folder.
-script_dir = os.path.dirname(os.path.abspath(__file__))
-task_manager_dir = os.path.join(script_dir, "Task manager")
-sys.path.insert(0, task_manager_dir)
+# Dynamically locate task_utils.py in common locations.
+script_dir = Path(__file__).resolve().parent
+candidates = [
+    script_dir / "task_utils.py",
+    script_dir / "Task manager" / "task_utils.py",
+    script_dir / "task_manager" / "task_utils.py",
+    script_dir / "Task_manager" / "task_utils.py",
+]
 
-import task_utils
+task_utils_path = next((path for path in candidates if path.is_file()), None)
+if task_utils_path is None:
+    raise ModuleNotFoundError(
+        "Could not find task_utils.py in the current directory or a child folder."
+    )
+
+spec = importlib.util.spec_from_file_location("task_utils", str(task_utils_path))
+task_utils = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(task_utils)
 
 
 def prompt_add_task():

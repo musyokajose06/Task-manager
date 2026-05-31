@@ -1,3 +1,11 @@
+import os
+import sys
+
+# Ensure local module imports resolve from this directory.
+script_dir = os.path.dirname(os.path.abspath(__file__))
+if script_dir not in sys.path:
+    sys.path.insert(0, script_dir)
+
 from validation import validate_task_title, validate_task_description, validate_due_date
 
 # Define tasks list
