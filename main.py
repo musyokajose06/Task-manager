@@ -43,7 +43,6 @@ def main():
         elif choice == "4":
 
             progress = calculate_progress()
-
             
             print(progress)
 

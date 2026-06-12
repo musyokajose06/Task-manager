@@ -1,4 +1,3 @@
-# task utilities
 from task_manager.validation import (
     validate_task_title,
     validate_task_description,
